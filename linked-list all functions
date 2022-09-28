@@ -1,0 +1,289 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct Node
+{
+ int data;
+ struct Node *next;
+}*first=NULL;
+
+
+void create(int A[],int n)
+{
+ int i;
+ struct Node *t,*last;
+ first=(struct Node *)malloc(sizeof(struct Node));
+ first->data=A[0];
+ first->next=NULL;
+ last=first;
+ 
+ for(i=1;i<n;i++)
+ {
+ t=(struct Node*)malloc(sizeof(struct Node));
+ t->data=A[i];
+ t->next=NULL;
+ last->next=t;
+ last=t;
+ }
+}
+void display_itr(struct Node *p)
+{
+    while(p!=NULL)
+    {
+        printf("%d\n",p->data);
+        p=p->next;
+    }
+}
+
+void display_rec(struct Node *p)
+{
+    if(p!=NULL)
+    {
+        
+        printf("%d ",p->data);
+        display_rec(p->next);
+        
+    }
+}
+int count(struct Node *p)
+{
+    int c=0;
+    while(p!=0)
+    {
+        c++;
+        p=p->next;
+    }
+    return c;
+}
+int add(struct Node *p)
+{
+    int sum=0;
+    while (p!=0)
+    {
+        sum+=p->data;
+        p=p->next;
+    }
+    return sum;
+    
+}
+int max(struct Node *p)
+{
+    int m=0;
+    while(p!=0)
+    {
+        if(m<p->data)
+        {
+            m=p->data;
+        }
+        p=p->next;
+    }
+    return m;
+}
+bool searching(struct Node *p,int key)
+{
+    while(p!=NULL)
+    {
+        if(p->data==key)
+        return 1;
+        p=p->next;
+    }
+    return 0;
+}
+void insert1(struct Node *p,int key)//inserting element before 1st node.
+{
+    Node *t;
+    t=(struct Node *)malloc(sizeof(struct Node));
+    t->data=key;t->next=first;
+    first=t;
+}
+void insert2(struct Node *p,int index,int key)
+{
+    Node *t;
+    t=(struct Node *)malloc(sizeof(struct Node));
+    t->data=key;
+    for(int i=0;i<index-1;i++)
+    {
+        p=p->next;
+    }
+    t->next=p->next;
+    p->next=t;
+}
+void insertlast(struct Node *p,int x)
+{
+    Node *t=(struct Node *)malloc(sizeof(struct Node));
+    t->data=x;
+    t->next=NULL;
+    while(p!=NULL)
+    {
+        p=p->next;
+    }
+    p->next=t;
+
+}
+void insertSorted(struct Node *p,int x)
+{
+    Node*t=(struct Node *)malloc(sizeof(struct Node));
+    t->data=x;
+    int i,count=0;
+    while(x>p->data)
+    {
+        p=p->next;
+        count++;
+    }
+    p=first;
+
+    for(i=0;i<count-1;i++)
+    {
+        p=p->next;
+
+    }
+    t->next=p->next;
+    p->next=t;
+}
+void delete_first(struct Node*p)
+{
+    struct Node* q=NULL;
+    q=first;
+
+    first=first->next;
+    int x=q->data;
+    free(q);
+}
+void delete_Node(struct Node * p,int index)
+{
+    struct Node *t=first;
+    struct Node *s=NULL;
+    int i;
+    for(i=0;i<index-1;i++)
+    {
+        s=t;
+        t=t->next;
+    }
+    s->next=t->next;
+    int x=t->data;
+    free(t);
+}
+int sort_not(struct Node *p)
+{
+    int i,x=-3246;                                        
+    while(p!=NULL)
+    {
+        if(x<p->data)
+        {
+            x=p->data;
+        }
+        else if(x>p->data)
+        return 0;
+        p=p->next;
+    }
+    return 1;
+
+}
+void delete_duplicate(struct Node *p)
+{
+    struct Node *q=p->next;
+    while(q!=NULL)
+    {
+        if(p->data!=q->data)
+        {
+            p=q;
+            q=q->next;
+        }
+        else{
+            p->next=q->next;
+            free(q);
+            q=p->next;
+        }
+    }
+}
+void reverse_elements(struct Node *p)
+{
+    int count=0;
+    struct Node *q=p;
+    while(q!=NULL)
+    {
+        q=q->next;
+        count++;
+    }
+    int i=0;
+    int b[count];
+    q=p;
+    while(q!=0){
+        b[i]=q->data;
+        q=q->next;
+        i++;
+    }
+    q=p;
+    while(q!=0){
+        q->data=b[count-1];
+        q=q->next;
+        count--;
+    }
+}
+void reverse_sliding_pointer(struct Node *p)
+{
+    struct Node *q=NULL;
+    struct Node *r=NULL;
+    while(p!=0)
+    {
+        r=q;
+        q=p;
+        p=p->next;
+        q->next=r;
+    }
+    first=q;
+
+}
+int first_common(struct Node *p){
+    struct Node *q=first;
+    struct Node *r=first->next;
+    while(q!=NULL){
+        while(r!=NULL)
+        {
+            if(q->data==r->data)
+            return q->data;
+            else
+            {
+                r=r->next;
+            }
+        }
+        q=q->next;
+        r=q->next->next;
+    }
+    return 0;
+}
+Node* rotate(struct Node* head, int k)
+    {
+        // Your code here
+        struct Node *p,*q,*r;
+        p=q=head;
+        r=head->next;
+        int i=0;
+        while(p!=NULL)
+        {
+            if(i<k)
+            {
+                p=p->next;
+                r=r->next;
+                
+            }
+            q=q->next;
+        }
+        q->next=head;
+        p->next=NULL;
+        head=q;
+        return head;
+        
+    }
+int main()
+{
+    struct Node *temp;
+    int a[]={1,2,3,2,6,7};
+    create(a,7);
+    
+   // printf("%d \n",searching(first,5));
+   //delete_Node(first,3);
+    //display_itr(first);
+//printf("%d \n",first_common(first));
+
+    return 0;
+}
